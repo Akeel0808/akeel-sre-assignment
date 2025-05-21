@@ -1,0 +1,29 @@
+################## Behavior Analysis ###############################
+1: OOM Issue
+The pod restarts on multiple hits due to Out Of Memory (OOM) issue 
+Fix: Increse the Resouce utilization in the deployment.yaml/value.yaml 
+
+**********************
+resources:
+  requests:
+    memory: "2Gi"
+    cpu: "200m"
+  limits:
+    memory: "2Gi"
+    cpu: "1"
+    
+    Note: stil the app craches upon allocation 2GB memory but handle the large requests
+    
+*********************
+
+
+###############################################################################
+2: Fix the application's memory usage (preferred long-term solution):
+The application (ghcr.io/cloudraftio/metrics-app:1.4) seems to have a memory leak or inefficient memory usage
+The pattern of OOMKilled suggests either a memory leak or an application that's not designed for concurrent requests
+ 
+ ################################################################################
+ 
+3:  Set up a Horizontal Pod Autoscaler to distribute load:(kubectl autoscale deployment counter-app --cpu-percent=50 --min=2 --max=5 -n default)
+
+#################################################################################################################
