@@ -1,0 +1,40 @@
+Step 1: Set up Development Environment
+Rirst, ensure all required tools are installed:
+
+Docker
+kubectl
+Helm
+KIND (Kubernetes IN Docker)
+Git
+ArgoCD CLI
+
+Step 2: Create KIND Cluster
+
+ 2.1 create kind-config.yaml
+ 2.2 run below command:
+     kind create cluster --name metrics-cluster --config kind-config.yaml
+     
+     
+Step 3: Install NGINX Ingress Controller
+       3.1 run below command:
+       kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+       
+Step 4: Install ArgoCD
+      4.1 run below commands:
+      kubectl create namespace argocd
+      kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml   
+      
+Step 5: Get the Admin password for UI Login with the below command:
+         ARGO_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+         echo "ArgoCD initial admin password: $ARGO_PASSWORD"
+         
+Step 6: Create Helm Chart for metrics-app      
+
+Step 7: Deploying the Application with ArgoCD  
+    7.1 create argocd-application.yaml
+    7.2 run : kubectl apply -f argocd-application.yaml
+                
+       
+
+
+
