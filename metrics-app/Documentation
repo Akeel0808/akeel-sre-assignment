@@ -1,12 +1,14 @@
 Step 1: Set up Development Environment
-Rirst, ensure all required tools are installed:
+First, ensure all required tools are installed:
 
+*******************************************
 Docker
 kubectl
 Helm
 KIND (Kubernetes IN Docker)
 Git
 ArgoCD CLI
+****************************************
 
 Step 2: Create KIND Cluster
 
@@ -15,24 +17,43 @@ Step 2: Create KIND Cluster
      kind create cluster --name metrics-cluster --config kind-config.yaml
      
      
-Step 3: Install NGINX Ingress Controller
-       3.1 run below command:
-       kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+Step 3:  Install NGINX Ingress Controller
+     3.1 run below command:
+         kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
        
-Step 4: Install ArgoCD
-      4.1 run below commands:
-      kubectl create namespace argocd
-      kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml   
+Step 4:  Install ArgoCD
+     4.1 run below commands:
+         kubectl create namespace argocd
+         kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml   
       
-Step 5: Get the Admin password for UI Login with the below command:
+Step 5:  Get the Admin password for UI Login with the below command:
          ARGO_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
          echo "ArgoCD initial admin password: $ARGO_PASSWORD"
          
-Step 6: Create Helm Chart for metrics-app      
+Step 6: Create Helm Chart for metrics-app
+        Directory Structure
+      
+      ── metrics-app/
+            ── argocd-application.yaml
+            ── argocd-ingress.yaml
+            ── deploy.sh
+            ── Behavior Analysis and RCA
+            ── deploy.sh
+            ── Documentation
+            
+      ── helm/
+            ── Chart.yaml
+            ── deployment.yaml
+            ── ingress.yaml
+            ── secret.yaml
+            ── service.yaml
+            ── values.yaml  
 
 Step 7: Deploying the Application with ArgoCD  
-    7.1 create argocd-application.yaml
-    7.2 run : kubectl apply -f argocd-application.yaml
+     7.1 create argocd-application.yaml
+     7.2 run : kubectl apply -f argocd-application.yaml.
+     
+Step 8:  Testing the Counter Endpoint    
                 
        
 
